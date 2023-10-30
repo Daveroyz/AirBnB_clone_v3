@@ -80,4 +80,3 @@ def update_review(review_id):
             setattr(review, key, value)
     storage.save()
     return make_response(jsonify(review.to_dict()), 200)
-
