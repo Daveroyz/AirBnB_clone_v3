@@ -14,7 +14,7 @@ from flasgger.utils import swag_from
 
 @app_views.route("places/<place_id>/amenities", methods=["GET"],
                  strict_slashes=False)
-@swag_from("documentation/placeamenity/get_places_amenities.yml",
+@swag_from("documentation/place_amenity/get_places_amenities.yml",
            methods=["GET"])
 def get_places_amenities(place_id):
     """retrives list of all Amenity for Place"""
@@ -31,7 +31,7 @@ def get_places_amenities(place_id):
 
 @app_views.route("places/<place_id>/amenities", methods=["DELETE"],
                  strict_slashes=False)
-@swag_from("documentation/placeamenity/get_places_amenities.yml",
+@swag_from("documentation/place_amenity/get_places_amenities.yml",
            methods=["DELETE"])
 def delete_place_amenity(place_id, amenity_id):
     """Delete amenity object of the place"""
@@ -47,6 +47,10 @@ def delete_place_amenity(place_id, amenity_id):
         if amenity not in place.amenities:
             abort(404)
         place.amenities.remove(amenity)
+    else:
+        if amenity_id not in place.amenity_ids:
+            abort(404)
+        place.amenity_ids.remove(amenity_id)
 
     storage.save()
     return make_response(jsonify({}), 200)
@@ -54,7 +58,7 @@ def delete_place_amenity(place_id, amenity_id):
 
 @app_views.route("places/<place_id>/amenities", methods=["POST"],
                  strict_slashes=False)
-@swag_from("documentation/placeamenity/get_places_amenities.yml",
+@swag_from("documentation/place_amenity/get_places_amenities.yml",
            methods=["POST"])
 def post_place_amenity(place_id, amenity_id):
     """Link Amenity object to a Place"""
